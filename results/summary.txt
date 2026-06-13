@@ -1,16 +1,19 @@
-Submission-hardening experiment for paper 72 adaptive_impedance_tokens
-Seven seeds, 600 episodes per seed, strong baselines, ablations, stress sweep, and negative cases.
-observed_only_behavior_clone hidden_mode_shift mean_success=0.4017 ci95=0.0083 tail=0.5983
-observed_only_behavior_clone combined_stress mean_success=0.3331 ci95=0.0149 tail=0.6669
-data_augmentation_wam hidden_mode_shift mean_success=0.4874 ci95=0.0127 tail=0.5126
-data_augmentation_wam combined_stress mean_success=0.4267 ci95=0.0156 tail=0.5733
-scalar_uncertainty_planner hidden_mode_shift mean_success=0.5619 ci95=0.0202 tail=0.4381
-scalar_uncertainty_planner combined_stress mean_success=0.4950 ci95=0.0155 tail=0.5050
-ensemble_disagreement_planner hidden_mode_shift mean_success=0.5833 ci95=0.0105 tail=0.4167
-ensemble_disagreement_planner combined_stress mean_success=0.5493 ci95=0.0149 tail=0.4507
-conformal_risk_filter hidden_mode_shift mean_success=0.6145 ci95=0.0039 tail=0.3855
-conformal_risk_filter combined_stress mean_success=0.5767 ci95=0.0133 tail=0.4233
-proposed_branch_mechanism hidden_mode_shift mean_success=0.6986 ci95=0.0161 tail=0.3014
-proposed_branch_mechanism combined_stress mean_success=0.6590 ci95=0.0155 tail=0.3410
-oracle_branch_upper_bound hidden_mode_shift mean_success=0.7760 ci95=0.0103 tail=0.2240
-oracle_branch_upper_bound combined_stress mean_success=0.7445 ci95=0.0121 tail=0.2555
+Paper 72 adaptive_impedance_tokens real MuJoCo rebuild
+Terminal recommendation: KILL_ARCHIVE
+Reason: impedance_token_policy does not clear strongest non-oracle baseline learned_gain_regressor decisively on combined_stress (tokens=0.488, best_baseline=0.929, paired diff=-0.440+/-0.141).
+Main eval rows: 3360
+Ablation rows: 420
+Stress rows: 2016
+Seeds: [0, 1, 2, 3, 4, 5, 6]
+Eval episodes per seed/split: 12
+Runtime seconds: 717.59
+
+Combined-stress summary:
+learned_gain_regressor success=0.92857 ci95=0.05555 force_error=0.33980 safety=0.00000 chatter=0.03323
+oracle_impedance success=0.88095 ci95=0.07855 force_error=0.33461 safety=0.00010 chatter=0.03294
+gain_scheduled_impedance success=0.73809 ci95=0.11510 force_error=0.35238 safety=0.00115 chatter=0.02892
+impedance_token_policy success=0.48810 ci95=0.12049 force_error=0.34098 safety=0.00188 chatter=0.03353
+adaptive_impedance_control success=0.05952 ci95=0.04667 force_error=0.32020 safety=0.00673 chatter=0.03499
+robust_mpc_impedance success=0.02381 ci95=0.03012 force_error=0.35620 safety=0.00000 chatter=0.02617
+fixed_impedance success=0.01190 ci95=0.02333 force_error=0.33964 safety=0.00840 chatter=0.03451
+admittance_switching_control success=0.00000 ci95=0.00000 force_error=0.36306 safety=0.00870 chatter=0.03354

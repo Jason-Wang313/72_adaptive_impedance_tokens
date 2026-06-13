@@ -1,19 +1,24 @@
 # Reproducibility Checklist
 
 ## What Reproduces
+
 - [x] `python src/run_experiment.py`
-- [x] `results/metrics.csv`
-- [x] `results/raw_seed_metrics.csv`
-- [x] `results/ablation_metrics.csv`
-- [x] `results/stress_sweep.csv`
-- [x] `results/negative_cases.csv`
-- [x] `paper/main.tex`
+- [x] MuJoCo contact-control rollouts in `results/impedance_raw.csv`
+- [x] Main metrics in `results/metrics.csv` and `results/impedance_metrics.csv`
+- [x] Per-seed summaries in `results/raw_seed_metrics.csv`
+- [x] Pairwise tests in `results/pairwise_stats.csv`
+- [x] Token ablations in `results/ablation_metrics.csv`
+- [x] Stress sweep raw and summary tables in `results/stress_sweep_raw.csv` and `results/stress_sweep.csv`
+- [x] Negative cases in `results/negative_cases.csv`
+- [x] Figures in `figures/`
+- [x] Manuscript source in `paper/main.tex`
 - [x] Canonical PDF: `C:/Users/wangz/Downloads/72.pdf`
 
 ## What Does Not Reproduce
-- [ ] Real robot results.
-- [ ] High-fidelity benchmark runs.
-- [ ] Trained WAM checkpoints.
-- [ ] Competing learned baselines.
 
-This is reproducible as an archive memo and synthetic stress test, not as an ICLR-main robotics system paper.
+- [ ] Real robot experiments.
+- [ ] External public contact-rich benchmark results.
+- [ ] A learned token policy trained end to end from robot data.
+- [ ] Video/visual rollout artifacts.
+
+This repository is reproducible as a local MuJoCo negative-result archive, not as an ICLR-main-ready robotics submission.

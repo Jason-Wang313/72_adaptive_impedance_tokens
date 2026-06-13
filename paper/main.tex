@@ -4,42 +4,114 @@
 \usepackage{hyperref}
 \usepackage{url}
 \usepackage{booktabs}
-\title{Adaptive Impedance Tokens: ICLR Main-Conference Gate Archive}
+\usepackage{graphicx}
+\usepackage{array}
+\title{Adaptive Impedance Tokens Fail a Learned-Gain Baseline in MuJoCo Contact Control}
 \author{Anonymous Authors}
 \begin{document}
 \maketitle
+
 \begin{abstract}
-This document is not an ICLR main-conference submission. It is the v3 main-conference gate for a generated robotics draft about impedance control and robot foundation models. The original research bet was: Represent impedance choices as adaptive action tokens grounded in contact outcomes. After a stricter hostile review, the honest terminal decision is \textbf{KILL/ARCHIVE}. Submission-hardening version: v3.
+We rebuilt a generated robotics idea into a concrete contact-control study: can a robot treat impedance choices as adaptive action tokens grounded in contact outcomes?  The v4 rebuild implements a MuJoCo planar surface-following benchmark with stiffness shifts, friction shifts, contact transitions, force-target changes, sensor noise, actuator limits, seven random seeds, uncertainty intervals, paired statistics, token ablations, stress sweeps, negative cases, and eight implemented controllers.  The result is negative.  On the decisive combined-stress split, a trained learned gain regressor reaches $0.929 \pm 0.056$ success, while the proposed impedance-token policy reaches only $0.488 \pm 0.120$.  The paired token-minus-learned success difference is $-0.440 \pm 0.141$.  Worse, the no-memory token ablation outperforms the full token mechanism.  We therefore mark the paper \textbf{KILL/ARCHIVE} for ICLR main.  The repository is useful as a reproducible negative-result package, but it should not be submitted as a main-conference robotics paper.
 \end{abstract}
 
-\section{Gate Decision}
-The v2 paper was workshop-only. Under the active ICLR-main standard, that is insufficient. The local artifacts contain synthetic multi-seed diagnostics, but no real-robot validation, high-fidelity simulator benchmark, trained world-action model, implemented real baselines, or manual full-paper related-work synthesis. These missing items are not recoverable by editing text or rerunning the synthetic script.
+\section{Decision}
+This document is the v4 ICLR-main gate for Paper 72, \emph{Adaptive Impedance Tokens}.  The earlier archive failed because it lacked real implemented evidence.  The current rebuild fixes much of that packaging problem: it contains a MuJoCo benchmark, implemented baselines, a trained learned gain regressor, an oracle, ablations, stress tests, figures, and raw rollouts.  The new reason for rejection is stronger: the central mechanism fails against the best non-oracle baseline.
 
-\section{Fatal ICLR-Main Blockers}
+\section{Hypothesis}
+The tested hypothesis is that discrete impedance tokens, updated from contact outcomes, provide a better action-level representation for contact-rich control than fixed gains, gain scheduling, adaptive impedance, admittance switching, robust conservative control, or continuous learned gain regression.  This would only be credible if the token policy improved held-out contact performance and if token-specific ablations showed that memory, discrete choices, force updates, transition planning, and safety penalties mattered.
+
+\section{Benchmark}
+The benchmark uses MuJoCo dynamics for a planar tool sliding along a virtual compliant surface.  The runner applies an external compliant wall model so that each episode exposes contact force, penetration, tangential slip, target force, actuator force, token identity, estimated stiffness, estimated friction, energy, and progress.  Five evaluation splits are used: nominal surface tracking, stiffness shift, friction/slip shift, contact transition, and combined stress.  The combined-stress split includes stiffness shift, friction shift, sensor noise, actuator limits, and force-target change.
+
+The main evaluation contains 3360 rollouts: 5 splits, 7 seeds, 12 episodes per seed/split, and 8 methods.  The ablation study contains 420 rollouts.  The stress sweep contains 2016 rollouts.  All intervals are 95 percent confidence intervals over seed-level means.
+
+\section{Methods}
+The implemented methods are:
 \begin{itemize}
-\item Evidence is synthetic and generated from a shared batch template.
-\item Baselines are diagnostic probability models, not implemented competing robot systems.
-\item Ablations do not correspond to a trained model checkpoint.
-\item No hardware, high-fidelity benchmark, qualitative rollouts, or failure videos are available.
-\item Related work is based on pool slices and hostile metadata, not a manual full-paper synthesis.
-\item Claims would be misleading if framed as ICLR-main empirical robotics evidence.
+\item \texttt{fixed\_impedance}: fixed stiffness/damping controller.
+\item \texttt{gain\_scheduled\_impedance}: hand-coded gain schedule from contact force and estimated stiffness.
+\item \texttt{adaptive\_impedance\_control}: continuous stiffness/friction estimator with adaptive gains.
+\item \texttt{admittance\_switching\_control}: switches between free-space approach and contact impedance.
+\item \texttt{robust\_mpc\_impedance}: conservative robust controller.
+\item \texttt{learned\_gain\_regressor}: trained ridge regressor mapping contact features to continuous gains.
+\item \texttt{impedance\_token\_policy}: proposed discrete token selector with contact-outcome updates.
+\item \texttt{oracle\_impedance}: upper-bound controller with true stiffness/friction access.
 \end{itemize}
 
-\section{Hostile Prior-Work Pressure}
-The closest local hostile records include:
-\begin{itemize}
-\item A hybrid control strategy for grinding and polishing robot based on adaptive impedance control (2021)
-\item Adaptive Admittance-Impedance Switching Control for Safe Mobile Manipulation: A Door Opening Application with Predictive Anti-Slip Logic (2026)
-\item Force Tracking in Impedance Control (1997)
-\item Smooth adaptive hybrid impedance control for robotic contact force tracking in dynamic environments (2020)
-\item Stable Robust Adaptive Impedance Control of a Prosthetic Leg (2015)
-\end{itemize}
-These works make generic world models, uncertainty, model-based planning, and robot policy robustness crowded. Without real empirical evidence, the remaining novelty boundary is too weak for ICLR main.
+\section{Main Results}
+Table~\ref{tab:main} shows the decisive combined-stress result.  The proposed token policy beats weak controllers but loses badly to the learned gain regressor and to a gain-scheduled controller.
 
-\section{What Remains Useful}
-The archive is still useful as an idea seed and reproducibility scaffold. The synthetic code, stress-test CSVs, reviewer attacks, and novelty-boundary docs can inform a future project. The correct next step is not more paper polishing; it is new evidence: implemented models, real baselines, manual related work, and robot or high-fidelity simulator validation.
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lccccc}
+\toprule
+Method & Success & Force err. & Overshoot & Safety & Progress \\
+\midrule
+\texttt{learned\_gain\_regressor} & $0.929 \pm 0.056$ & 0.340 & 0.773 & 0.000 & 0.847 \\
+\texttt{oracle\_impedance} & $0.881 \pm 0.079$ & 0.335 & 0.827 & 0.000 & 0.874 \\
+\texttt{gain\_scheduled\_impedance} & $0.738 \pm 0.115$ & 0.352 & 0.881 & 0.001 & 0.859 \\
+\texttt{impedance\_token\_policy} & $0.488 \pm 0.120$ & 0.341 & 0.963 & 0.002 & 0.806 \\
+\texttt{adaptive\_impedance\_control} & $0.060 \pm 0.047$ & 0.320 & 1.251 & 0.007 & 0.807 \\
+\texttt{robust\_mpc\_impedance} & $0.024 \pm 0.030$ & 0.356 & 0.308 & 0.000 & 0.724 \\
+\texttt{fixed\_impedance} & $0.012 \pm 0.023$ & 0.340 & 1.517 & 0.008 & 0.836 \\
+\texttt{admittance\_switching\_control} & $0.000 \pm 0.000$ & 0.363 & 2.003 & 0.009 & 0.754 \\
+\bottomrule
+\end{tabular}
+\caption{Combined-stress results.  Success is the binary task criterion; force error, overshoot, safety, and progress are continuous diagnostics.}
+\label{tab:main}
+\end{table}
 
-\section{Terminal Action}
-Decision: \textbf{KILL/ARCHIVE for ICLR main}. Do not submit this paper to ICLR main in the current form. Revival requires a substantially new empirical project.
+The paired comparison against the strongest non-oracle baseline is decisive: token policy minus learned gain regressor is $-0.440 \pm 0.141$ success.  This fails the pre-registered gate requiring the proposed policy to beat the best non-oracle baseline by a meaningful paired margin without a safety regression.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.95\linewidth]{../figures/impedance_success_by_split.png}
+\caption{Success by split.  The token policy is not competitive with the learned gain regressor on the decisive combined-stress split.}
+\end{figure}
+
+\section{Ablations}
+Table~\ref{tab:ablation} is even more damaging to the mechanism claim.  Removing token memory improves combined-stress success.  Therefore the current memory/update rule is not a useful representation of contact outcomes.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lcccc}
+\toprule
+Ablation & Success & Force err. & Overshoot & Safety \\
+\midrule
+\texttt{token\_no\_memory} & $0.600 \pm 0.113$ & 0.336 & 0.411 & 0.000 \\
+\texttt{token\_no\_force\_update} & $0.486 \pm 0.090$ & 0.312 & 0.903 & 0.001 \\
+\texttt{token\_no\_safety\_penalty} & $0.486 \pm 0.117$ & 0.341 & 0.888 & 0.002 \\
+\texttt{token\_full} & $0.457 \pm 0.147$ & 0.341 & 0.962 & 0.001 \\
+\texttt{token\_no\_transition\_planner} & $0.443 \pm 0.072$ & 0.342 & 0.952 & 0.002 \\
+\texttt{token\_no\_discrete\_tokens} & $0.300 \pm 0.074$ & 0.352 & 1.162 & 0.004 \\
+\bottomrule
+\end{tabular}
+\caption{Combined-stress token ablations.  The no-memory variant beating the full token method falsifies the intended memory-based mechanism in this implementation.}
+\label{tab:ablation}
+\end{table}
+
+\section{Stress Sweep and Negative Cases}
+The stress sweep is reported as a diagnostic, not as a polished benchmark contribution.  Low-stress settings reveal force-undertracking artifacts, while mid-stress settings separate oracle, learned gains, and the token policy.  The continuous stress table in \texttt{results/stress\_sweep.csv} reports force error, overshoot, safety, slip, and progress in addition to binary success.  The negative cases concentrate in contact-transition episodes where the token selector fails to suppress peak overshoot after a mode change.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.82\linewidth]{../figures/impedance_stress_sweep.png}
+\caption{Stress sweep success.  The curve is diagnostic rather than submission-grade; continuous metrics expose low-stress force-undertracking artifacts.}
+\end{figure}
+
+\section{Related Work Pressure}
+The hostile prior-work set is crowded.  Classic force tracking in impedance control \citep{prior3}, adaptive variable impedance under uncertainty \citep{prior6}, smooth adaptive hybrid impedance control \citep{prior4}, adaptive admittance-impedance switching \citep{prior2}, and passivity-based stiffness-adaptive skill learning \citep{prior7} all put pressure on a token-based contribution.  In such a crowded area, a new representation must win empirically.  It does not.
+
+\section{Limitations}
+This rebuild is still not a real robot paper.  It lacks hardware experiments, videos, public benchmark validation, and an end-to-end learned token policy.  The MuJoCo task is local and simplified.  The stress sweep has known calibration artifacts.  These limitations would matter even if the token policy won; because it loses, they reinforce the archive decision.
+
+\section{Conclusion}
+Paper 72 should not be submitted to ICLR main.  The v4 rebuild provides useful evidence, but the evidence is negative: continuous learned gain regression beats the proposed impedance-token policy by a large paired margin, and the token ablations do not support the mechanism.  The correct terminal state is \textbf{KILL/ARCHIVE}.
+
+\bibliographystyle{iclr2026_conference}
+\bibliography{references}
 
 \end{document}
