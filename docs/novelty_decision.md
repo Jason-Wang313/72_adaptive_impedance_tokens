@@ -1,7 +1,7 @@
 # Novelty Decision
 
-Chosen thesis: Adaptive Impedance Tokens turns the seed bet into a mechanism: Represent impedance choices as adaptive action tokens grounded in contact outcomes.
+Chosen thesis: adaptive impedance tokens represent impedance choices as contact-grounded action tokens.
 
-New central mechanism: Adaptive impedance tokens keeps action-critical alternatives explicit until a physical observation collapses them.
+v4 decision: KILL_ARCHIVE.
 
-Decision: proceed as a revise/workshop-strength ICLR-style draft with synthetic but runnable evidence.
+The thesis was tested in a real local MuJoCo benchmark, but the current mechanism did not survive comparison with a trained learned gain regressor. The result is useful as a negative finding: hand-coded token adaptation is not enough to beat continuous learned gain adaptation under the tested contact shifts.

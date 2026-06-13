@@ -1,4 +1,13 @@
-case,expected_behavior,observed_success,lesson
-unmodeled_hardware_damage,planner abstains or requests human inspection,0.18,branch semantics cannot repair missing actuation
-semantic_goal_ambiguity,diagnostic physical probes do not solve language ambiguity,0.31,needs a separate instruction-grounding loop
-adversarial_sensor_dropout,tail-risk objective becomes conservative,0.39,sensor-health modeling is out of scope
+case,split,seed,episode,success,normalized_force_error,peak_overshoot,safety_violation_rate,slip_rate,lesson
+0,contact_transition,5,11,0,0.37541,1.73948,0.00877,0.00000,token selector did not adapt fast enough after contact shift
+1,contact_transition,2,11,0,0.36758,1.72518,0.00877,0.00000,token selector did not adapt fast enough after contact shift
+2,contact_transition,6,0,0,0.38960,1.64251,0.00877,0.00000,token selector did not adapt fast enough after contact shift
+3,contact_transition,2,1,0,0.35093,1.63079,0.00877,0.00000,token selector did not adapt fast enough after contact shift
+4,contact_transition,3,10,0,0.38167,1.62589,0.00877,0.00000,token selector did not adapt fast enough after contact shift
+5,contact_transition,5,9,0,0.36638,1.59915,0.00877,0.00000,token selector did not adapt fast enough after contact shift
+6,contact_transition,2,6,0,0.36415,1.59843,0.00877,0.00000,token selector did not adapt fast enough after contact shift
+7,contact_transition,5,4,0,0.36799,1.59805,0.00877,0.07895,token selector did not adapt fast enough after contact shift
+8,contact_transition,6,7,0,0.35740,1.58368,0.00877,0.00877,token selector did not adapt fast enough after contact shift
+9,contact_transition,3,11,0,0.36538,1.57960,0.00877,0.00000,token selector did not adapt fast enough after contact shift
+10,contact_transition,6,6,0,0.35279,1.57944,0.00885,0.00000,token selector did not adapt fast enough after contact shift
+11,contact_transition,0,11,0,0.35201,1.57639,0.00877,0.00000,token selector did not adapt fast enough after contact shift
