@@ -4,6 +4,13 @@ Paper: 72 adaptive_impedance_tokens
 
 This v4 pass applies the ICLR main-conference bar after rebuilding the evidence package.
 
+## 2026-06-15 Continuation Audit
+Attack: A real MuJoCo contact-control benchmark does not rescue the paper unless the token policy beats learned gain adaptation and the token-memory ablation story holds.
+
+Verdict: Fatal. The verified CSVs contain 3,360 main rollouts, 420 ablation rollouts, and 2,016 stress rollouts across 7 seeds. On combined stress, `impedance_token_policy` reaches 0.488 success versus 0.929 for `learned_gain_regressor`, with paired token-minus-learned success difference -0.440 +/- 0.141. It also loses to `gain_scheduled_impedance` by -0.250 +/- 0.050. The ablation grid undercuts the mechanism: `token_full` reaches 0.457 success while `token_no_memory` reaches 0.600.
+
+Action: Keep KILL_ARCHIVE and preserve the reproducible negative result without claiming ICLR-main readiness.
+
 ## Attack 1: Does the proposed method beat the strongest implemented baseline?
 
 Verdict: No. `impedance_token_policy` reaches 0.488 +/- 0.120 combined-stress success. `learned_gain_regressor` reaches 0.929 +/- 0.056.

@@ -19,6 +19,8 @@ A hostile reviewer should reject this as an ICLR-main submission. The v4 rebuild
 
 The strongest objection is not merely "needs more experiments." It is that the current experiments already falsify the main claim. The full token policy reaches 0.488 combined-stress success, while the learned gain regressor reaches 0.929, and the paired gap is -0.440 +/- 0.141. The ablation table is also damaging because `token_no_memory` outperforms the full token method.
 
+The 2026-06-15 continuation audit rechecked the exact numbers from the raw CSVs: on combined stress, `impedance_token_policy` reaches 0.488 success while `learned_gain_regressor` reaches 0.929, with token-minus-learned paired success difference -0.440 +/- 0.141. The token policy also loses to `gain_scheduled_impedance`, 0.488 versus 0.738, with paired difference -0.250 +/- 0.050. In the ablation grid, `token_full` reaches 0.457 success while `token_no_memory` reaches 0.600.
+
 ## Honest Action
 
 Mark `KILL_ARCHIVE`. Keep the repository as a negative-result package and do not submit it as an ICLR main paper.
