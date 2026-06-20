@@ -1,0 +1,13 @@
+method,split_rows,success,normalized_force_error,safety_violation_rate,slip_rate,chatter_rate
+ablate_no_calibration_guard,4,0.09375,0.15027,0.00054,0.22268,0.05418
+ablate_no_discrete_tokens,4,0.50000,0.11546,0.00329,0.59491,0.07422
+ablate_no_force_update,4,0.00000,0.18969,0.00036,0.29697,0.02917
+ablate_no_memory,4,0.39062,0.16774,0.00073,0.46459,0.05265
+ablate_no_phase_memory,4,0.57031,0.15044,0.00090,0.45278,0.05032
+ablate_no_safety_penalty,4,0.00000,0.18702,0.00009,0.19945,0.03178
+ablate_no_slip_context,4,0.00000,0.17702,0.00027,0.20843,0.03745
+ablate_no_tail_risk_objective,4,0.72656,0.13968,0.00063,0.40759,0.05581
+ablate_no_transition_planner,4,0.00000,0.18700,0.00009,0.19987,0.03151
+impedance_token_policy_v4,4,0.03906,0.15309,0.00036,0.42083,0.05400
+learned_only_token_replacement,4,0.87500,0.16534,0.00712,0.57085,0.05995
+token_full_v5,4,0.00000,0.18599,0.00018,0.20738,0.03303

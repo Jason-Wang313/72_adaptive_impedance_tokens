@@ -1,0 +1,24 @@
+\begin{table}[t]
+\centering
+\caption{hard splits aggregate results. Higher success is better; lower diagnostic rates are better.}
+\label{tab:hard-aggregate}
+\small
+\begin{tabular}{lrrrrrr}
+\toprule
+Method & Succ. & Err. & Over. & Safe & Slip & Chat. \\
+\midrule
+admittance switching control & 0.941 & 0.118 & 1.694 & 0.009 & 0.544 & 0.052 \\
+adaptive impedance control & 0.866 & 0.115 & 1.534 & 0.008 & 0.569 & 0.048 \\
+random forest gain regressor & 0.826 & 0.177 & 1.472 & 0.009 & 0.559 & 0.037 \\
+fixed impedance & 0.725 & 0.207 & 1.795 & 0.029 & 0.555 & 0.045 \\
+conformal safety gain & 0.708 & 0.169 & 1.413 & 0.005 & 0.583 & 0.038 \\
+token no memory ablation & 0.636 & 0.177 & 1.342 & 0.003 & 0.488 & 0.034 \\
+oracle impedance & 0.595 & 0.107 & 1.480 & 0.005 & 0.577 & 0.046 \\
+ensemble uncertainty gain & 0.561 & 0.176 & 1.464 & 0.008 & 0.590 & 0.037 \\
+hist gradient gain regressor & 0.532 & 0.172 & 1.460 & 0.008 & 0.593 & 0.039 \\
+learned gain regressor & 0.413 & 0.173 & 1.513 & 0.010 & 0.603 & 0.034 \\
+gain scheduled impedance & 0.341 & 0.130 & 1.449 & 0.006 & 0.605 & 0.040 \\
+impedance token policy v4 & 0.129 & 0.163 & 1.308 & 0.002 & 0.454 & 0.032 \\
+\bottomrule
+\end{tabular}
+\end{table}

@@ -1,13 +1,13 @@
-case,split,seed,episode,success,normalized_force_error,peak_overshoot,safety_violation_rate,slip_rate,lesson
-0,contact_transition,5,11,0,0.37541,1.73948,0.00877,0.00000,token selector did not adapt fast enough after contact shift
-1,contact_transition,2,11,0,0.36758,1.72518,0.00877,0.00000,token selector did not adapt fast enough after contact shift
-2,contact_transition,6,0,0,0.38960,1.64251,0.00877,0.00000,token selector did not adapt fast enough after contact shift
-3,contact_transition,2,1,0,0.35093,1.63079,0.00877,0.00000,token selector did not adapt fast enough after contact shift
-4,contact_transition,3,10,0,0.38167,1.62589,0.00877,0.00000,token selector did not adapt fast enough after contact shift
-5,contact_transition,5,9,0,0.36638,1.59915,0.00877,0.00000,token selector did not adapt fast enough after contact shift
-6,contact_transition,2,6,0,0.36415,1.59843,0.00877,0.00000,token selector did not adapt fast enough after contact shift
-7,contact_transition,5,4,0,0.36799,1.59805,0.00877,0.07895,token selector did not adapt fast enough after contact shift
-8,contact_transition,6,7,0,0.35740,1.58368,0.00877,0.00877,token selector did not adapt fast enough after contact shift
-9,contact_transition,3,11,0,0.36538,1.57960,0.00877,0.00000,token selector did not adapt fast enough after contact shift
-10,contact_transition,6,6,0,0.35279,1.57944,0.00885,0.00000,token selector did not adapt fast enough after contact shift
-11,contact_transition,0,11,0,0.35201,1.57639,0.00877,0.00000,token selector did not adapt fast enough after contact shift
+case,split,seed,episode,success,normalized_force_error,peak_overshoot,safety_violation_rate,slip_rate,chatter_rate,lesson
+0,stiffness_shift,1,0,0,0.25022,2.05504,0.03488,0.10465,0.01163,token selector did not adapt fast enough after contact shift
+1,delayed_mode_switch,7,1,0,0.20777,2.02519,0.04651,0.26744,0.01163,token selector did not adapt fast enough after contact shift
+2,delayed_mode_switch,4,4,0,0.17262,2.00741,0.02326,0.26744,0.01163,token selector did not adapt fast enough after contact shift
+3,delayed_mode_switch,4,5,0,0.20696,1.93017,0.02299,0.20690,0.02299,token selector did not adapt fast enough after contact shift
+4,delayed_mode_switch,4,0,0,0.19996,1.87842,0.02299,0.16092,0.01149,token selector did not adapt fast enough after contact shift
+5,delayed_mode_switch,1,4,0,0.19272,1.87668,0.01163,0.16279,0.02326,token selector did not adapt fast enough after contact shift
+6,delayed_mode_switch,3,1,0,0.15681,1.86550,0.01163,0.13953,0.02326,token selector did not adapt fast enough after contact shift
+7,delayed_mode_switch,0,5,0,0.20402,1.86076,0.02326,0.22093,0.02326,token selector did not adapt fast enough after contact shift
+8,delayed_mode_switch,7,5,0,0.14887,1.85945,0.01163,0.10465,0.01163,token selector did not adapt fast enough after contact shift
+9,delayed_mode_switch,0,3,0,0.19270,1.84790,0.02299,0.28736,0.02299,token selector did not adapt fast enough after contact shift
+10,delayed_mode_switch,1,3,0,0.20190,1.83780,0.02326,0.11628,0.02326,token selector did not adapt fast enough after contact shift
+11,stiffness_shift,6,2,0,0.26858,1.81838,0.02299,0.06897,0.01149,token selector did not adapt fast enough after contact shift
