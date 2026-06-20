@@ -2,15 +2,17 @@
 
 1. Chosen thesis: impedance choices can be represented as adaptive action tokens grounded in contact outcomes.
 2. ICLR-main decision: KILL_ARCHIVE.
-3. Submission-hardening version: v4.
-4. Evidence: MuJoCo contact-control benchmark with 3360 main rows, 420 ablation rows, 2016 stress rows, seven seeds, implemented baselines, uncertainty intervals, paired statistics, figures, and negative cases.
-5. Decisive result: `impedance_token_policy` loses to `learned_gain_regressor` on `combined_stress`, 0.488 +/- 0.120 versus 0.929 +/- 0.056 success.
-6. Paired result: token-minus-learned success difference is -0.440 +/- 0.141.
-7. Ablation result: `token_no_memory` reaches 0.600 success, above `token_full` at 0.457, so the claimed memory-based token adaptation is not supported.
-8. Closest hostile prior work: see `docs/hostile_prior_work.md`, `docs/hostile_prior_work_100_cards.csv`, and `docs/hostile_reviewer_response.md`.
-9. Reproducibility: `python src/run_experiment.py` regenerates results and figures; code uses MuJoCo, NumPy, Matplotlib, and scikit-learn.
-10. Claim-validity status: main-conference claims killed; reproducible negative-result archive retained.
-11. Exact Downloads PDF path: `C:/Users/wangz/Downloads/72.pdf`
-12. GitHub URL: https://github.com/Jason-Wang313/72_adaptive_impedance_tokens
-13. Confirmation: no visible Desktop copy was requested or made.
-14. 2026-06-15 continuation audit: source compilation, CSV integrity, result scale, PDF/BibTeX rebuild, Downloads-only artifact placement, and public GitHub target were rechecked. Decision remains KILL_ARCHIVE.
+3. Submission-hardening version: v5 expanded archive.
+4. Evidence: CPU-only MuJoCo contact-control benchmark with 8,640 main rows, 1,536 ablation rows, 4,320 stress rows, 1,440 seed summaries, 168 paired comparisons, 8 seeds, 12 main splits, 15 main methods, 12 ablation methods, 12 stress methods, figures, fixed-risk analysis, and negative cases.
+5. Decisive hard-split result: `impedance_token_policy_v5` reaches 0.000 success; `admittance_switching_control` reaches 0.941.
+6. Decisive combined/extreme result: `impedance_token_policy_v5` reaches 0.000 success; `conformal_safety_gain` reaches 0.969.
+7. Decisive fixed-risk result: `impedance_token_policy_v5` reaches 0.000 at a 10 percent risk budget; `token_no_memory_ablation` reaches 0.051.
+8. Decisive ablation result: full v5 reaches 0.000; `learned_only_token_replacement` reaches 0.875.
+9. Closest hostile prior work: see `docs/hostile_prior_work.md`, `docs/hostile_prior_work_100_cards.csv`, and `docs/hostile_reviewer_response.md`; the v5 manuscript uses verified impedance-control, variable-impedance, MuJoCo, learned-baseline, MPC, and conformal-prediction references.
+10. Reproducibility: `scripts/build_submission_pdf.ps1` rebuilds generated TeX assets and the PDF; `scripts/validate_submission_artifacts.py` validates row counts, figures, TeX link boxes, Downloads PDF placement, repo URL, page count, and Desktop hygiene.
+11. PDF scale: 54 pages.
+12. Exact Downloads PDF path: `C:/Users/wangz/Downloads/72.pdf`
+13. GitHub URL: https://github.com/Jason-Wang313/72_adaptive_impedance_tokens
+14. Confirmation: no visible Desktop copy was requested or made.
+15. Visual QA: rendered representative PDF pages and inspected title/abstract, main results, figure pages, long appendix tables, and references.
+16. Claim-validity status: main-conference claims killed; reproducible negative-result archive retained.

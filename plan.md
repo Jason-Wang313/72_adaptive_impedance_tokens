@@ -10,6 +10,19 @@ Paper 72 was rebuilt as a real MuJoCo contact-control study before terminal pack
 
 Outcome: KILL_ARCHIVE. The token mechanism loses to the learned gain regressor and its ablations do not support the core claim.
 
+## 2026-06-21 Expanded-Standard Plan
+
+Paper 72 now enters the same expanded-submission protocol used for Papers 61-71. The goal is not to decorate the existing 4-page archive; it is to test whether a redesigned impedance-token v5 can survive strong classical, learned, risk-aware, and ablated baselines under frozen gates.
+
+Required additions:
+
+1. Expand the contact-control benchmark from five v4 splits to a larger hostile set covering stiffness, friction, target-force, actuator, sensor-noise, stick-slip, surface discontinuity, delayed mode switch, combined, and combined-extreme regimes.
+2. Add stronger baselines: random forest and histogram-gradient gain regressors, ensemble uncertainty gains, risk-averse impedance, conformal/safety-filter gains, token v4, token v5, and oracle.
+3. Add hostile ablations for memory, discrete tokens, force updates, transition planning, safety penalties, slip context, tail-risk objective, calibration guard, phase memory, and learned-only token replacement.
+4. Freeze hard-margin, paired, combined/extreme, fixed-risk, max-stress, ablation-necessity, and safety gates before the final run.
+5. Build a 25+ page ICLR-style manuscript with new theory, generated appendix tables, bright boxed clickable citations, validation scripts, and a Downloads-only numbered PDF.
+6. Preserve KILL_ARCHIVE unless the frozen evidence actually clears all core mechanism gates.
+
 ## 2026-06-15 Continuation Plan
 
 1. Re-audit the real MuJoCo impedance-control evidence before making any submission-readiness claim.

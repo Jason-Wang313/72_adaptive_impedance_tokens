@@ -1,19 +1,26 @@
-Paper 72 adaptive_impedance_tokens real MuJoCo rebuild
-Terminal recommendation: KILL_ARCHIVE
-Reason: impedance_token_policy does not clear strongest non-oracle baseline learned_gain_regressor decisively on combined_stress (tokens=0.488, best_baseline=0.929, paired diff=-0.440+/-0.141).
-Main eval rows: 3360
-Ablation rows: 420
-Stress rows: 2016
-Seeds: [0, 1, 2, 3, 4, 5, 6]
-Eval episodes per seed/split: 12
-Runtime seconds: 717.59
+Paper 72 adaptive_impedance_tokens expanded MuJoCo rebuild
+Terminal decision: KILL_ARCHIVE
+Terminal reason: v5 does not beat strongest hard-regime baseline admittance_switching_control by 0.030 (v5=0.000, best=0.941); paired lower bound against admittance_switching_control is not positive (-0.941+/-0.025); v5 does not beat strongest combined/extreme baseline conformal_safety_gain by 0.030 (v5=0.000, best=0.969); fixed-risk gate fails at budget 0.10 (v5=0.000, best=token_no_memory_ablation 0.051); maximum-stress gate fails (v5=0.000, best=adaptive_impedance_control 1.000); ablation gate fails because ablate_no_calibration_guard, ablate_no_discrete_tokens, ablate_no_force_update, ablate_no_memory, ablate_no_phase_memory, ablate_no_safety_penalty, ablate_no_slip_context, ablate_no_tail_risk_objective, ablate_no_transition_planner, impedance_token_policy_v4, learned_only_token_replacement matches or beats full v5
+Main eval rows: 8640
+Ablation rows: 1536
+Stress rows: 4320
+Seeds: [0, 1, 2, 3, 4, 5, 6, 7]
+Eval episodes per seed/split: 6
+Runtime seconds: 4034.50
 
-Combined-stress summary:
-learned_gain_regressor success=0.92857 ci95=0.05555 force_error=0.33980 safety=0.00000 chatter=0.03323
-oracle_impedance success=0.88095 ci95=0.07855 force_error=0.33461 safety=0.00010 chatter=0.03294
-gain_scheduled_impedance success=0.73809 ci95=0.11510 force_error=0.35238 safety=0.00115 chatter=0.02892
-impedance_token_policy success=0.48810 ci95=0.12049 force_error=0.34098 safety=0.00188 chatter=0.03353
-adaptive_impedance_control success=0.05952 ci95=0.04667 force_error=0.32020 safety=0.00673 chatter=0.03499
-robust_mpc_impedance success=0.02381 ci95=0.03012 force_error=0.35620 safety=0.00000 chatter=0.02617
-fixed_impedance success=0.01190 ci95=0.02333 force_error=0.33964 safety=0.00840 chatter=0.03451
-admittance_switching_control success=0.00000 ci95=0.00000 force_error=0.36306 safety=0.00870 chatter=0.03354
+Combined/extreme aggregate summary:
+conformal_safety_gain success=0.96875 ci95=0.03292 force_error=0.16715 safety=0.00328 slip=0.55392 chatter=0.08547
+adaptive_impedance_control success=0.95833 ci95=0.04715 force_error=0.12060 safety=0.00879 slip=0.53663 chatter=0.10774
+admittance_switching_control success=0.94792 ci95=0.03910 force_error=0.11726 safety=0.00620 slip=0.51358 chatter=0.11236
+ensemble_uncertainty_gain success=0.93750 ci95=0.05056 force_error=0.17672 safety=0.00906 slip=0.56180 chatter=0.08425
+random_forest_gain_regressor success=0.93750 ci95=0.04083 force_error=0.17825 safety=0.01263 slip=0.53470 chatter=0.08614
+gain_scheduled_impedance success=0.90625 ci95=0.07285 force_error=0.13476 safety=0.00587 slip=0.58000 chatter=0.09758
+oracle_impedance success=0.90625 ci95=0.05941 force_error=0.10530 safety=0.00505 slip=0.50142 chatter=0.11729
+hist_gradient_gain_regressor success=0.89583 ci95=0.05056 force_error=0.17686 safety=0.01248 slip=0.55902 chatter=0.08910
+learned_gain_regressor success=0.82292 ci95=0.06974 force_error=0.17320 safety=0.01232 slip=0.57414 chatter=0.07651
+fixed_impedance success=0.32292 ci95=0.09649 force_error=0.24305 safety=0.01089 slip=0.51634 chatter=0.07315
+token_no_memory_ablation success=0.08333 ci95=0.06668 force_error=0.16063 safety=0.00184 slip=0.45928 chatter=0.08609
+impedance_token_policy_v4 success=0.00000 ci95=0.00000 force_error=0.14643 safety=0.00085 slip=0.38866 chatter=0.07909
+impedance_token_policy_v5 success=0.00000 ci95=0.00000 force_error=0.17290 safety=0.00024 slip=0.17551 chatter=0.05464
+risk_averse_impedance success=0.00000 ci95=0.00000 force_error=0.21110 safety=0.00000 slip=0.00151 chatter=0.05019
+robust_mpc_impedance success=0.00000 ci95=0.00000 force_error=0.19850 safety=0.00089 slip=0.32411 chatter=0.06899

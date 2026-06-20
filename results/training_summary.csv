@@ -1,2 +1,2 @@
-training_examples,learned_gain_train_mae,feature_dim,target_dim
-2600,1.41961,14,4
+training_examples,ridge_train_mae,random_forest_train_mae,hist_gradient_train_mae,conformal_margin,feature_dim,target_dim
+2400,2.47544,1.67628,1.88363,4.66850,16,4

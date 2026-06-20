@@ -1,0 +1,21 @@
+\begin{table}[t]
+\centering
+\caption{Selected methods on combined extreme stress.}
+\label{tab:selected-split}
+\small
+\begin{tabular}{lrrrrrr}
+\toprule
+Method & Succ. & Err. & Over. & Safe & Slip & Prog. \\
+\midrule
+adaptive impedance control & 0.979 & 0.120 & 1.607 & 0.004 & 0.530 & 0.801 \\
+admittance switching control & 0.958 & 0.114 & 1.611 & 0.003 & 0.503 & 0.781 \\
+conformal safety gain & 0.958 & 0.162 & 1.434 & 0.001 & 0.553 & 0.779 \\
+oracle impedance & 0.938 & 0.103 & 1.498 & 0.002 & 0.488 & 0.784 \\
+random forest gain regressor & 0.938 & 0.175 & 1.669 & 0.009 & 0.530 & 0.763 \\
+learned gain regressor & 0.812 & 0.165 & 1.594 & 0.006 & 0.573 & 0.803 \\
+token no memory ablation & 0.146 & 0.156 & 1.434 & 0.001 & 0.461 & 0.727 \\
+impedance token policy v4 & 0.000 & 0.143 & 1.362 & 0.000 & 0.409 & 0.719 \\
+impedance token policy v5 & 0.000 & 0.165 & 1.312 & 0.000 & 0.237 & 0.674 \\
+\bottomrule
+\end{tabular}
+\end{table}

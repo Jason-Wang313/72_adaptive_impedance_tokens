@@ -1,51 +1,47 @@
 # 72 Adaptive Impedance Tokens
 
-Submission-hardening version: v4
+Submission-hardening version: v5 expanded ICLR-main kill archive
 
 Terminal decision: KILL_ARCHIVE for ICLR main conference.
 
-This repository now contains a real Paper 72 rebuild: a MuJoCo contact-control benchmark, implemented impedance/admittance/robust/learned/token baselines, seven-seed evaluation, uncertainty intervals, ablations, stress sweeps, negative cases, figures, and a rewritten archive manuscript. The evidence does not support an ICLR-main submission. The proposed `impedance_token_policy` loses decisively to a trained `learned_gain_regressor` on the combined-stress split.
+This repository contains the expanded Paper 72 rebuild: a CPU-only MuJoCo contact-control audit with implemented impedance, admittance, robust, learned, conformal, token, ablation, and oracle controllers. The evidence does not support submission. The proposed `impedance_token_policy_v5` collapses under the frozen hostile-review gates while simpler classical and learned controllers remain strong.
 
-## Main Result
+## Frozen Evidence
 
 Full run:
 
-- Main evaluation rows: 3360.
-- Ablation rows: 420.
-- Stress rows: 2016.
-- Seeds: 0 through 6.
-- Episodes per seed and split: 12.
-- Runtime: 717.59 seconds.
+- Main evaluation rows: 8,640.
+- Ablation rows: 1,536.
+- Stress rows: 4,320.
+- Seed summaries: 1,440.
+- Pairwise rows: 168.
+- Training examples: 2,400.
+- Seeds: 0 through 7.
+- Runtime: 4,034.50 seconds.
 
-Combined-stress success:
+Headline gate failures:
 
-- `learned_gain_regressor`: 0.929 +/- 0.056.
-- `oracle_impedance`: 0.881 +/- 0.079.
-- `gain_scheduled_impedance`: 0.738 +/- 0.115.
-- `impedance_token_policy`: 0.488 +/- 0.120.
+- Hard splits: `impedance_token_policy_v5` = 0.000 success; best non-oracle baseline `admittance_switching_control` = 0.941.
+- Combined/extreme splits: `impedance_token_policy_v5` = 0.000; best non-oracle baseline `conformal_safety_gain` = 0.969.
+- Fixed-risk 10 percent budget: `impedance_token_policy_v5` = 0.000; best non-oracle baseline `token_no_memory_ablation` = 0.051.
+- Maximum combined-extreme stress: `impedance_token_policy_v5` = 0.000; best non-oracle baseline `adaptive_impedance_control` = 0.958.
+- Ablations: full v5 = 0.000; `learned_only_token_replacement` = 0.875.
 
-Paired comparison against the strongest non-oracle baseline:
-
-- Token policy versus learned gain regressor: -0.440 +/- 0.141 success.
-
-This fails the submission gate. The paper is retained as a reproducible negative-result archive, not as a submission.
+The paper is retained as a reproducible negative-result archive, not as a submission.
 
 ## Reproduce
 
+Frozen full protocol:
+
 ```powershell
-python src\run_experiment.py
+python src\run_experiment.py --seeds 8 --episodes 6 --ablation-episodes 4 --stress-episodes 3 --train-scenes 2400 --splits nominal_surface_tracking stiffness_shift friction_slip_shift contact_transition target_force_jump actuator_saturation sensor_noise_burst stick_slip_cycle surface_discontinuity delayed_mode_switch combined_stress combined_extreme_stress --ablation-splits combined_stress combined_extreme_stress stick_slip_cycle actuator_saturation --stress-splits combined_stress combined_extreme_stress friction_slip_shift --stress-levels 0.0 0.25 0.5 0.75 1.0 --results-dir results --figures-dir figures --workers 1
 ```
 
-Outputs are written under `results/` and `figures/`.
-
-## Rebuild PDF
+Rebuild paper assets and PDF:
 
 ```powershell
-cd paper
-pdflatex -interaction=nonstopmode -halt-on-error main.tex
-bibtex main
-pdflatex -interaction=nonstopmode -halt-on-error main.tex
-pdflatex -interaction=nonstopmode -halt-on-error main.tex
+powershell -ExecutionPolicy Bypass -File scripts\build_submission_pdf.ps1
+python scripts\validate_submission_artifacts.py
 ```
 
 Canonical local PDF: `C:/Users/wangz/Downloads/72.pdf`

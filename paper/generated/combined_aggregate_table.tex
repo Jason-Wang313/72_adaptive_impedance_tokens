@@ -1,0 +1,24 @@
+\begin{table}[t]
+\centering
+\caption{combined and extreme aggregate results. Higher success is better; lower diagnostic rates are better.}
+\label{tab:combined-aggregate}
+\small
+\begin{tabular}{lrrrrrr}
+\toprule
+Method & Succ. & Err. & Over. & Safe & Slip & Chat. \\
+\midrule
+conformal safety gain & 0.969 & 0.167 & 1.510 & 0.003 & 0.554 & 0.085 \\
+adaptive impedance control & 0.958 & 0.121 & 1.661 & 0.009 & 0.537 & 0.108 \\
+admittance switching control & 0.948 & 0.117 & 1.664 & 0.006 & 0.514 & 0.112 \\
+ensemble uncertainty gain & 0.938 & 0.177 & 1.635 & 0.009 & 0.562 & 0.084 \\
+random forest gain regressor & 0.938 & 0.178 & 1.684 & 0.013 & 0.535 & 0.086 \\
+gain scheduled impedance & 0.906 & 0.135 & 1.580 & 0.006 & 0.580 & 0.098 \\
+oracle impedance & 0.906 & 0.105 & 1.582 & 0.005 & 0.501 & 0.117 \\
+hist gradient gain regressor & 0.896 & 0.177 & 1.680 & 0.012 & 0.559 & 0.089 \\
+learned gain regressor & 0.823 & 0.173 & 1.655 & 0.012 & 0.574 & 0.077 \\
+fixed impedance & 0.323 & 0.243 & 1.701 & 0.011 & 0.516 & 0.073 \\
+token no memory ablation & 0.083 & 0.161 & 1.468 & 0.002 & 0.459 & 0.086 \\
+impedance token policy v4 & 0.000 & 0.146 & 1.407 & 0.001 & 0.389 & 0.079 \\
+\bottomrule
+\end{tabular}
+\end{table}

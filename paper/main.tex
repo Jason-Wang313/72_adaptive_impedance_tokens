@@ -1,115 +1,312 @@
 \documentclass{article}
 \usepackage{iclr2026_conference,times}
 \input{math_commands.tex}
-\usepackage{hyperref}
-\usepackage{url}
-\usepackage{booktabs}
-\usepackage{graphicx}
-\usepackage{array}
-\title{Adaptive Impedance Tokens Fail a Learned-Gain Baseline in MuJoCo Contact Control}
-\author{Anonymous Authors}
+\usepackage{amsmath,amssymb,booktabs,graphicx,longtable,array,url,xcolor}
+\usepackage[
+  colorlinks=false,
+  pdfborder={0 0 1.8},
+  citebordercolor={0 1 0},
+  linkbordercolor={0 0.7 0},
+  urlbordercolor={0 0.7 0}
+]{hyperref}
+\input{generated/result_macros.tex}
+
+\title{Adaptive Impedance Tokens for Contact Control:\\A Frozen MuJoCo KILL ARCHIVE}
+\author{Anonymous authors\\Paper under double-blind review}
+
+\newcommand{\vfivemethod}{\texttt{impedance\_token\_policy\_v5}}
+\newcommand{\vfourmethod}{\texttt{impedance\_token\_policy\_v4}}
+\newcommand{\nomemory}{\texttt{token\_no\_memory\_ablation}}
+
 \begin{document}
 \maketitle
 
 \begin{abstract}
-We rebuilt a generated robotics idea into a concrete contact-control study: can a robot treat impedance choices as adaptive action tokens grounded in contact outcomes?  The v4 rebuild implements a MuJoCo planar surface-following benchmark with stiffness shifts, friction shifts, contact transitions, force-target changes, sensor noise, actuator limits, seven random seeds, uncertainty intervals, paired statistics, token ablations, stress sweeps, negative cases, and eight implemented controllers.  The result is negative.  On the decisive combined-stress split, a trained learned gain regressor reaches $0.929 \pm 0.056$ success, while the proposed impedance-token policy reaches only $0.488 \pm 0.120$.  The paired token-minus-learned success difference is $-0.440 \pm 0.141$.  Worse, the no-memory token ablation outperforms the full token mechanism.  We therefore mark the paper \textbf{KILL/ARCHIVE} for ICLR main.  The repository is useful as a reproducible negative-result package, but it should not be submitted as a main-conference robotics paper.
+Variable impedance is one of the classic ideas in contact-rich robot manipulation, but a modern submission claim must survive strong learned, adaptive, robust, and risk-aware baselines.
+This paper rebuilds a short generated idea into a frozen CPU-only MuJoCo contact-control audit.
+The tested hypothesis is that a robot can treat impedance choices as adaptive discrete tokens: token identity stores contact phase, stiffness response, slip context, and safety history, and the controller updates the token from measured contact outcomes.
+We expand the evaluation to \TrainingRows{} training examples, \MainRows{} main method-evaluation rows, \AblationRows{} ablation rows, \StressRows{} stress rows, \SeedRows{} seed summaries, \PairwiseRows{} paired comparisons, and \NegativeRows{} representative negative cases.
+The benchmark includes nominal surface tracking, stiffness shifts, friction and slip shifts, contact transitions, force-target jumps, actuator saturation, sensor-noise bursts, stick-slip cycles, surface discontinuities, delayed mode switches, combined stress, and combined extreme stress.
+The result is decisively negative.
+On hard regimes, \vfivemethod{} reaches \VFiveHardSuccess{} success, while the strongest non-oracle baseline, \BestHardMethod{}, reaches \BestHardSuccess{}.
+On combined and extreme regimes, \vfivemethod{} reaches \VFiveCombinedSuccess{} while \BestCombinedMethod{} reaches \BestCombinedSuccess{}.
+At a fixed 10 percent diagnostic-risk budget, \vfivemethod{} reaches \VFiveFixedRiskSuccess{} while \BestFixedRiskMethod{} reaches \BestFixedRiskSuccess{}.
+At maximum combined-extreme stress, \vfivemethod{} reaches \VFiveMaxStressSuccess{} while \BestMaxStressMethod{} reaches \BestMaxStressSuccess{}.
+The frozen terminal decision is \textbf{\PaperDecision{}}.
+We therefore archive the work as a useful negative result: discrete impedance tokens are an interpretable control object, but this implementation is not submission-ready for ICLR main.
 \end{abstract}
 
-\section{Decision}
-This document is the v4 ICLR-main gate for Paper 72, \emph{Adaptive Impedance Tokens}.  The earlier archive failed because it lacked real implemented evidence.  The current rebuild fixes much of that packaging problem: it contains a MuJoCo benchmark, implemented baselines, a trained learned gain regressor, an oracle, ablations, stress tests, figures, and raw rollouts.  The new reason for rejection is stronger: the central mechanism fails against the best non-oracle baseline.
+\section{Question}
+Impedance control asks a manipulator to regulate the dynamic relationship between motion and contact force, not merely position or force alone \citep{hogan1985impedance1,hogan1985impedance3}.
+That framing is still attractive for modern learning systems because contact is not a single scalar error.
+A tool can be too stiff, too soft, slipping, chattering, penetrating, saturating, or tracking the wrong force target.
+The original Paper 72 idea proposed that these regimes should be represented as discrete adaptive tokens.
+A token would stand for a local contact mode and would carry memory about the recent outcome of that mode.
+If true, the token representation could be more robust than fixed impedance, hand gain scheduling, continuous adaptive impedance, admittance switching, robust MPC, or learned gain regression.
 
-\section{Hypothesis}
-The tested hypothesis is that discrete impedance tokens, updated from contact outcomes, provide a better action-level representation for contact-rich control than fixed gains, gain scheduling, adaptive impedance, admittance switching, robust conservative control, or continuous learned gain regression.  This would only be credible if the token policy improved held-out contact performance and if token-specific ablations showed that memory, discrete choices, force updates, transition planning, and safety penalties mattered.
+The submission-level question is harsher:
+does the token representation remain necessary after the baselines are made uncomfortable?
+Variable impedance control and variable impedance learning are already crowded areas \citep{kronander2016stability,abudakka2020review,buchli2011learning}.
+Hybrid force/position control and impedance control give strong classical alternatives \citep{raibert1981hybrid,hogan1985impedance1}.
+Modern CPU-light regressors and ensembles are strong enough to learn continuous gain maps from compact contact features \citep{breiman2001random,pedregosa2011scikit}.
+Conformal prediction gives a principled way to turn residual uncertainty into guarded action selection \citep{shafer2008conformal}.
+Therefore the paper cannot be accepted merely because the token idea is plausible.
+It must win against these competitors under frozen stress tests, paired seed statistics, fixed-risk analysis, and component ablations.
 
-\section{Benchmark}
-The benchmark uses MuJoCo dynamics for a planar tool sliding along a virtual compliant surface.  The runner applies an external compliant wall model so that each episode exposes contact force, penetration, tangential slip, target force, actuator force, token identity, estimated stiffness, estimated friction, energy, and progress.  Five evaluation splits are used: nominal surface tracking, stiffness shift, friction/slip shift, contact transition, and combined stress.  The combined-stress split includes stiffness shift, friction shift, sensor noise, actuator limits, and force-target change.
+\section{Contribution and Terminal Status}
+This archive makes three contributions, all negative or diagnostic.
+First, it provides an executable MuJoCo-based contact-control benchmark for comparing impedance, admittance, robust, learned, conformal, and token controllers under controlled distribution shifts \citep{todorov2012mujoco}.
+Second, it states explicit submission gates before the final run and reports every failed gate.
+Third, it gives a mechanism-level autopsy of the token policy: memory, discrete tokenization, force updates, slip context, transition planning, tail-risk objectives, and calibration guards do not jointly produce a defensible advantage.
 
-The main evaluation contains 3360 rollouts: 5 splits, 7 seeds, 12 episodes per seed/split, and 8 methods.  The ablation study contains 420 rollouts.  The stress sweep contains 2016 rollouts.  All intervals are 95 percent confidence intervals over seed-level means.
+This is not a camera-ready success paper; it is a KILL ARCHIVE.
+The correct terminal state is \textbf{\PaperDecision{}}.
+That matters because a polished narrative could easily hide the real outcome.
+The best evidence here says the proposed discrete token controller is dominated by simpler controllers, and even token ablations often outperform the full method.
+The package is still valuable because negative archives prevent re-spending effort on a mechanism that looks attractive before strong baselines arrive.
 
-\section{Methods}
-The implemented methods are:
-\begin{itemize}
-\item \texttt{fixed\_impedance}: fixed stiffness/damping controller.
-\item \texttt{gain\_scheduled\_impedance}: hand-coded gain schedule from contact force and estimated stiffness.
-\item \texttt{adaptive\_impedance\_control}: continuous stiffness/friction estimator with adaptive gains.
-\item \texttt{admittance\_switching\_control}: switches between free-space approach and contact impedance.
-\item \texttt{robust\_mpc\_impedance}: conservative robust controller.
-\item \texttt{learned\_gain\_regressor}: trained ridge regressor mapping contact features to continuous gains.
-\item \texttt{impedance\_token\_policy}: proposed discrete token selector with contact-outcome updates.
-\item \texttt{oracle\_impedance}: upper-bound controller with true stiffness/friction access.
-\end{itemize}
+\section{Problem Setup}
+Each episode simulates a planar contact tool moving along a compliant virtual surface.
+The controller observes position, velocity, force error, estimated surface stiffness, estimated friction, slip proxy, target force, actuator saturation, and recent contact history.
+The controller chooses a normal/tangential command through an impedance-like policy parameterized by stiffness, damping, desired force, and safety guards.
+The external surface model introduces contact-force dynamics and frictional slip while MuJoCo provides deterministic rigid-body integration.
+
+Let $x_t$ be the tool state, $f_t$ the measured normal contact force, $f_t^\star$ the target force, $s_t$ a slip indicator, and $a_t$ the selected impedance action.
+An episode succeeds only when all of the following are true:
+normalized force error remains below the frozen threshold,
+peak overshoot stays below the frozen threshold,
+safety violation rate remains low,
+slip and chatter remain bounded,
+and final progress along the surface is sufficient.
+The binary success metric is intentionally unforgiving.
+Continuous diagnostics are always reported because binary success alone can hide why a controller fails.
+
+\paragraph{Splits.}
+The final protocol evaluates twelve splits:
+nominal surface tracking, stiffness shift, friction/slip shift, contact transition, target-force jump, actuator saturation, sensor-noise burst, stick-slip cycle, surface discontinuity, delayed mode switch, combined stress, and combined extreme stress.
+The hard-split aggregate includes the nontrivial and shifted regimes.
+The combined/extreme aggregate isolates the regimes most relevant to the token claim, where multiple shifts occur together.
+
+\paragraph{Metrics.}
+We report success, normalized force error, peak overshoot, safety violation rate, slip rate, chatter rate, settling latency, energy, final progress, token switches, paired seed differences, fixed-risk operating points, ablations, stress sweeps, and negative cases.
+For success and continuous metrics, the split-level tables include 95 percent intervals over seed-level means.
+For paired comparisons, the reference is always \vfivemethod{} so that positive paired success differences would favor the proposed method.
+
+\section{Method Under Test}
+\vfivemethod{} chooses among a finite set of impedance tokens.
+Each token encodes a local stiffness/damping profile, a target-force response, a slip guard, and a transition preference.
+The controller maintains a phase memory over recent force error, overshoot, slip, saturation, and mode transitions.
+When contact outcomes are poor, the token selector updates its preference toward safer or softer tokens.
+When progress is slow, the selector shifts toward more aggressive contact tracking.
+The intended advantage is not raw function approximation.
+The intended advantage is structured memory: a token should remember that a surface behaved stiffly, slippery, delayed, or discontinuously, and should react faster than a continuous gain regressor that sees only instantaneous features.
+
+That story is coherent but fragile.
+If the token update becomes too conservative, the policy can avoid safety violations while failing the task.
+If it overreacts to force error, it can chatter or overshoot.
+If memory stores stale phase information, it can persist in the wrong contact mode after a transition.
+If discrete token boundaries are poorly calibrated, a continuous regressor can dominate simply by interpolating gains smoothly.
+The frozen results show that these failure modes are not hypothetical.
+
+\section{Baselines}
+The baseline set is deliberately hostile.
+\texttt{fixed\_impedance} uses fixed stiffness and damping.
+\texttt{gain\_scheduled\_impedance} hand-codes a gain schedule from force and stiffness estimates.
+\texttt{adaptive\_impedance\_control} continuously updates contact estimates and gains.
+\texttt{admittance\_switching\_control} switches between free-space and contact modes.
+\texttt{robust\_mpc\_impedance} uses conservative model-predictive action selection, in the spirit of constrained MPC \citep{mayne2000constrained}.
+\texttt{learned\_gain\_regressor}, \texttt{random\_forest\_gain\_regressor}, and \texttt{hist\_gradient\_gain\_regressor} learn continuous gain maps from synthetic contact examples.
+\texttt{ensemble\_uncertainty\_gain} uses model disagreement as a risk signal.
+\texttt{risk\_averse\_impedance} sacrifices progress for lower tail risk.
+\texttt{conformal\_safety\_gain} uses calibration residuals to guard learned gains.
+\vfourmethod{} replays the previous token controller.
+\nomemory{} removes token memory.
+\texttt{oracle\_impedance} has privileged access to true surface parameters and is used only as an upper-bound diagnostic.
+
+This mix is important.
+Weak baselines would make a token win meaningless.
+The paper asks whether the proposed structure survives when the alternatives are classical, learned, uncertainty-aware, and safety-biased.
+
+\section{Frozen Protocol}
+The final protocol was frozen in \path{docs/paper72_protocol_freeze_20260621.md} before the full run.
+The full command used 8 seeds, 6 main episodes per seed/split, 4 ablation episodes per seed/split, 3 stress episodes per seed/split/level, 2,400 training scenes, 12 main splits, 15 main methods, 4 ablation splits, 12 ablation methods, 3 stress splits, 5 stress levels, and 12 stress methods.
+The run was CPU-only and single-process for RAM discipline.
+No final gate was adjusted after seeing the full result.
+
+The decisive gates were:
+the proposed method must beat the strongest hard-regime non-oracle baseline by at least 0.030 success;
+the paired lower bound against the strongest relevant baseline must be positive;
+the proposed method must beat the strongest combined/extreme non-oracle baseline by at least 0.030 success;
+fixed-risk success at a 10 percent diagnostic-risk budget cannot be below the best baseline;
+maximum-stress success cannot collapse relative to the best non-oracle controller;
+and ablations must show that removing the claimed components hurts full v5 or clearly worsens safety.
+These gates are intentionally unforgiving because the user goal was not pretty results.
+It was a result that survives hostile review.
 
 \section{Main Results}
-Table~\ref{tab:main} shows the decisive combined-stress result.  The proposed token policy beats weak controllers but loses badly to the learned gain regressor and to a gain-scheduled controller.
+\input{generated/hard_aggregate_table.tex}
 
-\begin{table}[h]
+The hard-regime aggregate immediately kills the main claim.
+\vfivemethod{} reaches \VFiveHardSuccess{} success.
+The strongest non-oracle baseline, \BestHardMethod{}, reaches \BestHardSuccess{}.
+The gap is not a small statistical wobble; it is a collapse of the proposed controller on the same evidence budget.
+The full token policy avoids some safety violations, but it does so by failing to complete the task.
+Safety-by-paralysis is not a deployable contact-control result.
+
+\input{generated/combined_aggregate_table.tex}
+\input{generated/selected_split_table.tex}
+
+The combined/extreme aggregate is worse.
+\vfivemethod{} reaches \VFiveCombinedSuccess{} success while \BestCombinedMethod{} reaches \BestCombinedSuccess{}.
+These are exactly the regimes where the token story should matter most.
+The fact that conformal and adaptive baselines remain strong while the token policy goes to zero means the mechanism is not just underdeveloped; it is actively miscalibrated for the frozen benchmark.
+
+\begin{figure}[t]
 \centering
-\small
-\begin{tabular}{lccccc}
-\toprule
-Method & Success & Force err. & Overshoot & Safety & Progress \\
-\midrule
-\texttt{learned\_gain\_regressor} & $0.929 \pm 0.056$ & 0.340 & 0.773 & 0.000 & 0.847 \\
-\texttt{oracle\_impedance} & $0.881 \pm 0.079$ & 0.335 & 0.827 & 0.000 & 0.874 \\
-\texttt{gain\_scheduled\_impedance} & $0.738 \pm 0.115$ & 0.352 & 0.881 & 0.001 & 0.859 \\
-\texttt{impedance\_token\_policy} & $0.488 \pm 0.120$ & 0.341 & 0.963 & 0.002 & 0.806 \\
-\texttt{adaptive\_impedance\_control} & $0.060 \pm 0.047$ & 0.320 & 1.251 & 0.007 & 0.807 \\
-\texttt{robust\_mpc\_impedance} & $0.024 \pm 0.030$ & 0.356 & 0.308 & 0.000 & 0.724 \\
-\texttt{fixed\_impedance} & $0.012 \pm 0.023$ & 0.340 & 1.517 & 0.008 & 0.836 \\
-\texttt{admittance\_switching\_control} & $0.000 \pm 0.000$ & 0.363 & 2.003 & 0.009 & 0.754 \\
-\bottomrule
-\end{tabular}
-\caption{Combined-stress results.  Success is the binary task criterion; force error, overshoot, safety, and progress are continuous diagnostics.}
-\label{tab:main}
-\end{table}
+\includegraphics[width=\linewidth]{../figures/impedance_success_by_split.png}
+\caption{Success by split across all main methods. Strong classical and learned baselines dominate the full token policy on the hard regimes.}
+\label{fig:success}
+\end{figure}
 
-The paired comparison against the strongest non-oracle baseline is decisive: token policy minus learned gain regressor is $-0.440 \pm 0.141$ success.  This fails the pre-registered gate requiring the proposed policy to beat the best non-oracle baseline by a meaningful paired margin without a safety regression.
-
-\begin{figure}[h]
+\begin{figure}[t]
 \centering
-\includegraphics[width=0.95\linewidth]{../figures/impedance_success_by_split.png}
-\caption{Success by split.  The token policy is not competitive with the learned gain regressor on the decisive combined-stress split.}
+\includegraphics[width=\linewidth]{../figures/impedance_force_error_by_split.png}
+\caption{Normalized force error by split. Continuous diagnostics explain failures hidden by binary success alone.}
+\label{fig:force-error}
+\end{figure}
+
+\section{Fixed-Risk Analysis}
+\input{generated/fixed_risk_table.tex}
+
+The fixed-risk table asks a different question:
+if we constrain diagnostic risk, which controller still completes the task?
+At a 10 percent safety/slip/chatter budget, \vfivemethod{} reaches \VFiveFixedRiskSuccess{} success while \BestFixedRiskMethod{} reaches \BestFixedRiskSuccess{}.
+This is fatal for a safety-oriented token argument.
+The no-memory token ablation occupies a better fixed-risk operating point than full v5, so the memory component cannot be defended as the source of safe success.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{../figures/impedance_safety_by_split.png}
+\caption{Safety violation rate by split. Low violation rate is not enough when paired with zero task success.}
+\label{fig:safety}
+\end{figure}
+
+\section{Stress Sweep}
+\input{generated/stress_table.tex}
+
+The stress sweep increases contact disturbance, friction shift, noise, saturation, and transition severity.
+At maximum combined-extreme stress, \vfivemethod{} reaches \VFiveMaxStressSuccess{} success while \BestMaxStressMethod{} reaches \BestMaxStressSuccess{}.
+The stress sweep therefore does not reveal a hidden robust niche for the token controller.
+It instead shows that adaptive and conformal baselines exploit the same compact contact features more effectively.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.92\linewidth]{../figures/impedance_stress_sweep.png}
+\caption{Stress sweep success. The proposed token policy does not recover at high stress.}
+\label{fig:stress}
 \end{figure}
 
 \section{Ablations}
-Table~\ref{tab:ablation} is even more damaging to the mechanism claim.  Removing token memory improves combined-stress success.  Therefore the current memory/update rule is not a useful representation of contact outcomes.
+\input{generated/ablation_table.tex}
 
-\begin{table}[h]
+Ablations are the clearest mechanism test.
+Full v5 reaches \FullAblationSuccess{} aggregate success on the frozen ablation splits.
+The best ablation, \BestAblationMethod{}, reaches \BestAblationSuccess{}.
+This reverses the intended story.
+Removing or replacing pieces of the token mechanism often improves success.
+In particular, replacing token logic with a learned-only gain behavior or removing the tail-risk objective can outperform full v5.
+This means the token memory, discrete tokenization, and calibration guards are not empirically supported as a necessary representation in this benchmark.
+
+\begin{figure}[t]
 \centering
-\small
-\begin{tabular}{lcccc}
-\toprule
-Ablation & Success & Force err. & Overshoot & Safety \\
-\midrule
-\texttt{token\_no\_memory} & $0.600 \pm 0.113$ & 0.336 & 0.411 & 0.000 \\
-\texttt{token\_no\_force\_update} & $0.486 \pm 0.090$ & 0.312 & 0.903 & 0.001 \\
-\texttt{token\_no\_safety\_penalty} & $0.486 \pm 0.117$ & 0.341 & 0.888 & 0.002 \\
-\texttt{token\_full} & $0.457 \pm 0.147$ & 0.341 & 0.962 & 0.001 \\
-\texttt{token\_no\_transition\_planner} & $0.443 \pm 0.072$ & 0.342 & 0.952 & 0.002 \\
-\texttt{token\_no\_discrete\_tokens} & $0.300 \pm 0.074$ & 0.352 & 1.162 & 0.004 \\
-\bottomrule
-\end{tabular}
-\caption{Combined-stress token ablations.  The no-memory variant beating the full token method falsifies the intended memory-based mechanism in this implementation.}
-\label{tab:ablation}
-\end{table}
-
-\section{Stress Sweep and Negative Cases}
-The stress sweep is reported as a diagnostic, not as a polished benchmark contribution.  Low-stress settings reveal force-undertracking artifacts, while mid-stress settings separate oracle, learned gains, and the token policy.  The continuous stress table in \texttt{results/stress\_sweep.csv} reports force error, overshoot, safety, slip, and progress in addition to binary success.  The negative cases concentrate in contact-transition episodes where the token selector fails to suppress peak overshoot after a mode change.
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.82\linewidth]{../figures/impedance_stress_sweep.png}
-\caption{Stress sweep success.  The curve is diagnostic rather than submission-grade; continuous metrics expose low-stress force-undertracking artifacts.}
+\includegraphics[width=0.84\linewidth]{../figures/impedance_ablation_success.png}
+\caption{Ablation success over frozen ablation splits. Full v5 is not the best token-family variant.}
+\label{fig:ablation}
 \end{figure}
 
-\section{Related Work Pressure}
-The hostile prior-work set is crowded.  Classic force tracking in impedance control \citep{prior3}, adaptive variable impedance under uncertainty \citep{prior6}, smooth adaptive hybrid impedance control \citep{prior4}, adaptive admittance-impedance switching \citep{prior2}, and passivity-based stiffness-adaptive skill learning \citep{prior7} all put pressure on a token-based contribution.  In such a crowded area, a new representation must win empirically.  It does not.
+\section{Negative Cases}
+\input{generated/negative_cases_table.tex}
 
-\section{Limitations}
-This rebuild is still not a real robot paper.  It lacks hardware experiments, videos, public benchmark validation, and an end-to-end learned token policy.  The MuJoCo task is local and simplified.  The stress sweep has known calibration artifacts.  These limitations would matter even if the token policy won; because it loses, they reinforce the archive decision.
+The negative cases are included to make the failure actionable.
+They are dominated by delayed-mode-switch and stiffness-shift episodes where the token selector does not adapt quickly enough after a contact change.
+The policy preserves conservative contact behavior but misses the transition window, allowing peak overshoot or normalized force error to exceed the success threshold.
+This suggests that a future token controller would need either a better change-point detector, a continuous fallback gain map, or a formal passivity-style guard that does not force the controller into zero-success conservatism.
 
-\section{Conclusion}
-Paper 72 should not be submitted to ICLR main.  The v4 rebuild provides useful evidence, but the evidence is negative: continuous learned gain regression beats the proposed impedance-token policy by a large paired margin, and the token ablations do not support the mechanism.  The correct terminal state is \textbf{KILL/ARCHIVE}.
+\section{Theory: Why the Token Claim Is Hard}
+\paragraph{Proposition 1: discrete mode memory can help only when the mode is identifiable.}
+Let $z_t$ denote the latent contact regime and let $\tau_t$ be the token state.
+If $I(z_t;\tau_t\mid h_t)>0$ for history $h_t$, then a token policy can in principle reduce regret relative to a memoryless gain map.
+However, if the observable history already contains sufficient statistics for $z_t$, a learned continuous gain map can approximate the same decision boundary without a discrete token.
+The frozen random-forest and conformal baselines exploit this pressure.
+
+\paragraph{Proposition 2: conservative token updates can create safety without success.}
+Suppose a token update rule penalizes overshoot and slip more strongly than progress.
+Then a stable fixed point can exist in which the controller selects low-energy, low-slip tokens that never violate safety thresholds but also never reaches the target-force/progress success set.
+This explains why low safety violation rates do not rescue \vfivemethod{}.
+The fixed-risk analysis requires success at a fixed risk budget, not risk reduction alone.
+
+\paragraph{Proposition 3: ablation dominance falsifies component necessity.}
+Let $M$ be full v5 and $M_{-j}$ remove component $j$.
+If $S(M_{-j}) \ge S(M)$ and $M_{-j}$ is not worse on safety, slip, or chatter by a predefined margin, then component $j$ is not locally necessary for the claimed mechanism.
+The frozen ablation table violates the necessity condition for many components.
+Therefore the paper cannot claim that token memory, discrete tokens, force updates, slip context, transition planning, tail-risk objectives, or calibration guards are validated by the current benchmark.
+
+\paragraph{Proposition 4: hostile-review identifiability.}
+For any compact feature vector $\phi(h_t)$ used by both a token selector and a learned gain regressor, a sufficiently expressive regressor can approximate the token selector's induced gain map on the support of the evaluation distribution.
+The token representation is identifiable as a contribution only if it extrapolates better under held-out stress, improves fixed-risk success, or produces ablation-separated mechanisms.
+Paper 72 fails all three tests.
+
+\section{Related Work}
+The result sits in a long contact-control lineage.
+Hogan's impedance-control formulation motivates regulating dynamic interaction rather than treating position and force as isolated objectives \citep{hogan1985impedance1,hogan1985impedance3}.
+Hybrid position/force control gives an earlier structured alternative for compliant manipulation \citep{raibert1981hybrid}.
+Variable impedance and variable impedance learning have been studied as both control and learning problems \citep{kronander2016stability,abudakka2020review,buchli2011learning}.
+MuJoCo provides the simulation substrate for the reproducible contact-control audit \citep{todorov2012mujoco}.
+Random forests and scikit-learn regressors make the learned baselines strong enough that hand-structured token logic must earn its keep \citep{breiman2001random,pedregosa2011scikit}.
+Conformal prediction motivates the guarded learned baseline: uncertainty is not used as decoration, but as a deployment-relevant decision constraint \citep{shafer2008conformal}.
+
+This paper does not claim to supersede those lines.
+It reports a local negative result: in this benchmark, the discrete impedance-token mechanism is not isolated as necessary, robust, or safer.
+
+\section{Decision}
+The frozen terminal reason is:
+\begin{quote}\small\raggedright\sloppy
+\PaperReason{}\par
+\end{quote}
+The correct decision is \textbf{\PaperDecision{}}.
+This is a scientific failure, not a formatting failure.
+The benchmark is real enough to falsify the submission claim.
+The archive should be retained because it documents exactly how an appealing adaptive-token idea fails once strong baselines, fixed-risk analysis, and ablation necessity tests arrive.
+
+\clearpage
+\appendix
+\section{Frozen Protocol and Reproducibility}
+The plan-first document is \path{docs/paper72_expanded_submission_plan_20260621.md}.
+The development log is \path{docs/paper72_development_log_20260621.md}.
+The protocol freeze is \path{docs/paper72_protocol_freeze_20260621.md}.
+The generated terminal decision is \path{docs/paper72_expanded_terminal_decision_20260621.md}.
+The final PDF is written to \path{C:/Users/wangz/Downloads/72.pdf}; no copy is placed on the visible Desktop.
+
+The frozen evidence consists of \MainRows{} main rows, \RolloutRows{} rollout rows, \SeedRows{} seed summaries, \MetricRows{} split-method metric rows, \PairwiseRows{} paired rows, \AblationRows{} ablation rows, \StressRows{} stress rows, and \NegativeRows{} negative cases.
+All generated tables below are produced by \path{scripts/render_submission_assets.py} from CSV artifacts, not by manual transcription.
+
+\section{Full Split-Method Metrics}
+\input{generated/full_metrics_longtable.tex}
+
+\section{Full Aggregate Metrics}
+\input{generated/full_aggregate_longtable.tex}
+
+\section{All Seed Metrics}
+\input{generated/all_seed_metrics_longtable.tex}
+
+\section{Full Paired Comparisons}
+\input{generated/full_pairwise_longtable.tex}
+
+\section{Full Ablation Metrics}
+\input{generated/full_ablation_longtable.tex}
+
+\section{Full Stress Sweep Metrics}
+\input{generated/full_stress_longtable.tex}
 
 \bibliographystyle{iclr2026_conference}
 \bibliography{references}
